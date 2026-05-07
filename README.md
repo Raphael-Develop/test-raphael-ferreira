@@ -25,3 +25,19 @@ Proposer une refactorisation de la fonctionnalité pour permettre de la réutili
 Il faut prévoir la possibilité d'étendre/customiser les règles selon les usages.
 
 Exemple: On veut créer une nouvelle configuration SignConfig qui contient aussi une collection de règles.
+
+
+Setup Raphael 
+# Setup
+
+```bash
+docker compose up -d
+docker compose exec web composer install
+php bin/console doctrine:migrations:migrate
+php bin/console importmap:install
+
+Application:
+http://localhost:8000
+
+PhpMyAdmin
+http://localhost:8081
