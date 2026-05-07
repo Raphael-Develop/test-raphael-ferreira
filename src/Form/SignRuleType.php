@@ -2,18 +2,17 @@
 
 namespace App\Form;
 
-use App\Entity\StaplingConfig;
-use App\Entity\StaplingRule;
-use App\Enum\MetadataEnum;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\SignRule;
+use App\Enum\MetadataEnumSign;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StaplingRuleType extends AbstractType
+class SignRuleType extends AbstractType
 {
     final public const OPERATOR_AND = 'and';
     final public const OPERATOR_OR = 'or';
@@ -29,8 +28,8 @@ class StaplingRuleType extends AbstractType
     {
 
         $metadataChoices = [];
-        foreach (MetadataEnum::cases() as $case) {
-            $metadataChoices[$case->value] = $case;
+        foreach (MetadataEnumSign::cases() as $case) {
+            $metadataChoices[$case->name] = $case;
         }
 
         $builder
@@ -45,6 +44,7 @@ class StaplingRuleType extends AbstractType
             ->add('metadata', ChoiceType::class, [
                 'choices' => $metadataChoices,
                 'required' => true,
+                'placeholder' => false,
             ])
             ->add('comparisonOperator', ChoiceType::class, [
                 'choices' => [
@@ -60,13 +60,16 @@ class StaplingRuleType extends AbstractType
                 'required' => false,
                 'empty_data' => '',
             ])
+            ->add('excludeFromGeneration', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => StaplingRule::class,
+            'data_class' => SignRule::class,
         ]);
     }
 }

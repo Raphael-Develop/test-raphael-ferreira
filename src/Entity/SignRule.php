@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Contract\Rule\RuleInterface;
-use App\Enum\MetadataEnum;
-use App\Repository\StaplingRuleRepository;
+use App\Enum\MetadataEnumSign;
+use App\Repository\SignRuleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: StaplingRuleRepository::class)]
-class StaplingRule implements RuleInterface
+#[ORM\Entity(repositoryClass: SignRuleRepository::class)]
+class SignRule implements RuleInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,11 +24,14 @@ class StaplingRule implements RuleInterface
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
-    #[ORM\Column(type: 'string', length: 255, enumType: MetadataEnum::class)]
-    private MetadataEnum $metadata;
+    #[ORM\Column(type: 'boolean')]
+    private bool $excludeFromGeneration = false;
 
-    #[ORM\ManyToOne(inversedBy: 'rules')]
-    private ?StaplingConfig $staplingConfig = null;
+    #[ORM\Column(type: 'string', length: 255, enumType: MetadataEnumSign::class)]
+    private MetadataEnumSign $metadata;
+
+    #[ORM\ManyToOne(inversedBy: 'signRules')]
+    private ?SignConfig $signConfig = null;
 
     public function getId(): ?int
     {
@@ -76,22 +79,33 @@ class StaplingRule implements RuleInterface
         return $this->metadata->value;
     }
 
-    public function setMetadata(MetadataEnum $metadata): static
+    public function setMetadata(MetadataEnumSign $metadata): static
     {
         $this->metadata = $metadata;
 
         return $this;
     }
 
-    public function getStaplingConfig(): ?StaplingConfig
+    public function getSignConfig(): ?SignConfig
     {
-        return $this->staplingConfig;
+        return $this->signConfig;
     }
 
-    public function setStaplingConfig(?StaplingConfig $staplingConfig): static
+    public function setSignConfig(?SignConfig $signConfig): static
     {
-        $this->staplingConfig = $staplingConfig;
+        $this->signConfig = $signConfig;
 
         return $this;
     }
+
+    public function isExcludeFromGeneration(): bool
+    {
+        return $this->excludeFromGeneration;
+    }
+
+    public function setExcludeFromGeneration(bool $excludeFromGeneration): void
+    {
+        $this->excludeFromGeneration = $excludeFromGeneration;
+    }
+
 }

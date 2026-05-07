@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250210154219 extends AbstractMigration
+final class Version20260506235600 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20250210154219 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE stapling_rule CHANGE metadata_enum metadata VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE sign_rule ADD exclude_from_generation TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE stapling_rule CHANGE metadata metadata_enum VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE sign_rule DROP exclude_from_generation');
     }
 }

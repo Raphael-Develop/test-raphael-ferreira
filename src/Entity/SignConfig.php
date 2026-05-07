@@ -3,13 +3,14 @@
 namespace App\Entity;
 
 use App\Contract\Config\ConfigInterface;
-use App\Repository\StaplingConfigRepository;
+use App\Repository\SignConfigRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: StaplingConfigRepository::class)]
-class StaplingConfig implements ConfigInterface
+#[ORM\Entity(repositoryClass: SignConfigRepository::class)]
+class SignConfig implements ConfigInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,14 +21,14 @@ class StaplingConfig implements ConfigInterface
     private ?string $slug = null;
 
     /**
-     * @var Collection<int, StaplingRule>
+     * @var Collection<int, SignRule>
      */
-    #[ORM\OneToMany(targetEntity: StaplingRule::class, mappedBy: 'staplingConfig', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $rules;
+    #[ORM\OneToMany(targetEntity: SignRule::class, mappedBy: 'signConfig', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $signRules;
 
     public function __construct()
     {
-        $this->rules = new ArrayCollection();
+        $this->signRules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,29 +49,29 @@ class StaplingConfig implements ConfigInterface
     }
 
     /**
-     * @return Collection<int, StaplingRule>
+     * @return Collection<int, SignRule>
      */
     public function getRules(): Collection
     {
-        return $this->rules;
+        return $this->signRules;
     }
 
-    public function addRule(StaplingRule $rule): static
+    public function addRule(SignRule $rule): static
     {
-        if (!$this->rules->contains($rule)) {
-            $this->rules->add($rule);
-            $rule->setStaplingConfig($this);
+        if (!$this->signRules->contains($rule)) {
+            $this->signRules->add($rule);
+            $rule->setSignConfig($this);
         }
 
         return $this;
     }
 
-    public function removeRule(StaplingRule $rule): static
+    public function removeRule(SignRule $rule): static
     {
-        if ($this->rules->removeElement($rule)) {
+        if ($this->signRules->removeElement($rule)) {
             // set the owning side to null (unless already changed)
-            if ($rule->getStaplingConfig() === $this) {
-                $rule->setStaplingConfig(null);
+            if ($rule->getSignConfig() === $this) {
+                $rule->setSignConfig(null);
             }
         }
 
