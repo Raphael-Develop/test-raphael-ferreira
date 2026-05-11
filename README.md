@@ -40,4 +40,4 @@ Application:
 http://localhost:8000
 
 PhpMyAdmin
-http://localhost:8081
+http://localhost:8001
